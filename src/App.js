@@ -1,5 +1,6 @@
 /* global SillyTavern */
-import React, { useState } from 'react';
+/* global jQuery */
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -10,6 +11,29 @@ import Page from './Page';
  * @property {string} title - The title of the page
  * @property {string} content - The content of the page
  */
+
+/**
+ * Import a member from a URL, bypassing webpack.
+ * @param {string} url URL to import from
+ * @param {string} what Name of the member to import
+ * @param {any} defaultValue Fallback value
+ * @returns {any} Imported member
+ */
+async function importFromUrl(url, what, defaultValue = null) {
+    try {
+        const module = await import(/* webpackIgnore: true */ url);
+        if (!module[what]) {
+            throw new Error(`No ${what} in module`);
+        }
+        return module[what];
+    }
+     catch (error) {
+        console.error(`Failed to import ${what} from ${url}: ${error}`);
+        return defaultValue;
+     }
+}
+
+const dragElement = await importFromUrl('../../../../RossAscends-mods.js', 'dragElement', () => { });
 
 /**
  * Persistent state manager for the notebook.
@@ -38,6 +62,10 @@ class StateManager {
 function App({ onCloseClicked }) {
     const [pages, setPages] = useState(StateManager.getPages());
     const [selectedIndex, setSelectedIndex] = useState(0);
+
+    useEffect(() => {
+        dragElement(jQuery(document.getElementById('notebookPanel')));
+    }, []);
 
     function handleChange(index, page) {
         const newPages = [...pages];
@@ -69,13 +97,13 @@ function App({ onCloseClicked }) {
     return (
         <>
             <div className="panelControlBar flex-container alignItemsBaseline">
-                <div id="notebookheader" class="fa-fw fa-solid fa-grip drag-grabber"></div>
-                <div id="notebookMaximize" class="inline-drawer-maximize">
+                <div id="notebookPanelheader" class="fa-fw fa-solid fa-grip drag-grabber"></div>
+                <div id="notebookPanelMaximize" class="inline-drawer-maximize">
                     <i class="floating_panel_maximize fa-fw fa-solid fa-window-maximize"></i>
                 </div>
-                <div id="notebookClose" class="fa-fw fa-solid fa-circle-xmark floating_panel_close" onClick={() => onCloseClicked()}></div>
+                <div id="notebookPanelClose" class="fa-fw fa-solid fa-circle-xmark floating_panel_close" onClick={() => onCloseClicked()}></div>
             </div>
-            <div name="notebookHolder" class="scrollY">
+            <div name="notebookPanelHolder" class="scrollY">
                 <Tabs selectedIndex={selectedIndex} onSelect={(index) => setSelectedIndex(index)}>
                     <TabList>
                         {pages.map((page, index) => (
