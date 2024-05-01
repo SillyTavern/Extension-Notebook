@@ -24,6 +24,10 @@
     color: var(--SmartThemeBodyColor);
 }
 
+#notebookPanel .ql-toolbar.ql-snow .ql-formats {
+    margin-right: 5px;
+}
+
 #notebookPanel .react-tabs__tab:focus:after {
     display: none;
 }
