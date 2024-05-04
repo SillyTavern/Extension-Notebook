@@ -1,7 +1,10 @@
+/* global SillyTavern */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles.css';
+
+const { registerSlashCommand } = SillyTavern.getContext();
 
 // Choose the root container for the extension's main UI
 const buttonContainer = document.getElementById('extensionsMenu');
@@ -37,3 +40,9 @@ root.render(
         <App onCloseClicked={closePanel} />
     </React.StrictMode>
 );
+
+try {
+    registerSlashCommand('notebook', () => buttonElement.click(), ['nb'], '– toggle the notebook display', true, true);
+} catch (err) {
+    console.error('Failed to register notebook command', err);
+}
