@@ -17,7 +17,7 @@ export default function Page({ page, onChange }) {
                 <input placeholder="Enter a title..." className="text_pole flex1" type="text" value={page.title} onChange={(event) => onChange({ ...page, title: event.target.value })} />
                 <i className="right_menu_button fa-solid fa-trash" onClick={() => confirm('Are you sure?') && onChange(null)}></i>
             </div>
-            <ReactQuill placeholder="What's on your mind?" theme="snow" value={page.content} onChange={(content) => onChange({ ...page, content })} />
+            <ReactQuill placeholder="What's on your mind?" theme="snow" value={page.content} onChange={(content) => onChange({ ...page, content })} scrollingContainer={document.getElementById('notebookPanelHolder')} />
         </div>
     );
 }

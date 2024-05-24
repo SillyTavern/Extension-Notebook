@@ -144,6 +144,14 @@
     font-size: var(--mainFontSize);
 }
 
+#notebookPanel .ql-clipboard {
+    position: fixed !important;
+}
+
+#notebookPanel #notebookPanelHolder {
+    margin-top: 15px;
+}
+
 #notebookPanel .ql-editor ol,
 #notebookPanel .ql-editor ul {
     padding-left: 0.5em;

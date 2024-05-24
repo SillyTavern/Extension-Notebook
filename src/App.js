@@ -103,7 +103,7 @@ function App({ onCloseClicked }) {
                 </div>
                 <div id="notebookPanelClose" class="fa-fw fa-solid fa-circle-xmark floating_panel_close" onClick={() => onCloseClicked()}></div>
             </div>
-            <div name="notebookPanelHolder" class="scrollY">
+            <div id="notebookPanelHolder" name="notebookPanelHolder" class="scrollY">
                 <Tabs selectedIndex={selectedIndex} onSelect={(index) => setSelectedIndex(index)}>
                     <TabList>
                         {pages.map((page, index) => (
