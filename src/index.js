@@ -7,7 +7,7 @@ import './styles.css';
 const { registerSlashCommand } = SillyTavern.getContext();
 
 // Choose the root container for the extension's main UI
-const buttonContainer = document.getElementById('extensionsMenu');
+const buttonContainer = document.getElementById('notebook_wand_container') ?? document.getElementById('extensionsMenu');
 const buttonElement = document.createElement('div');
 const iconElement = document.createElement('i');
 const textElement = document.createElement('span');
