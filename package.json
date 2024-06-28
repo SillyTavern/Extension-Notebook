@@ -10,7 +10,8 @@
     "react-tabs": "^6.0.2"
   },
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development"
   },
   "eslintConfig": {
     "extends": [

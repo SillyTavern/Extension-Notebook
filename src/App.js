@@ -97,13 +97,13 @@ function App({ onCloseClicked }) {
     return (
         <>
             <div className="panelControlBar flex-container alignItemsBaseline">
-                <div id="notebookPanelheader" class="fa-fw fa-solid fa-grip drag-grabber"></div>
-                <div id="notebookPanelMaximize" class="inline-drawer-maximize">
-                    <i class="floating_panel_maximize fa-fw fa-solid fa-window-maximize"></i>
+                <div id="notebookPanelheader" className="fa-fw fa-solid fa-grip drag-grabber"></div>
+                <div id="notebookPanelMaximize" className="inline-drawer-maximize">
+                    <i className="floating_panel_maximize fa-fw fa-solid fa-window-maximize"></i>
                 </div>
-                <div id="notebookPanelClose" class="fa-fw fa-solid fa-circle-xmark floating_panel_close" onClick={() => onCloseClicked()}></div>
+                <div id="notebookPanelClose" className="fa-fw fa-solid fa-circle-xmark floating_panel_close" onClick={() => onCloseClicked()}></div>
             </div>
-            <div id="notebookPanelHolder" name="notebookPanelHolder" class="scrollY">
+            <div id="notebookPanelHolder" name="notebookPanelHolder" className="scrollY">
                 <Tabs selectedIndex={selectedIndex} onSelect={(index) => setSelectedIndex(index)}>
                     <TabList>
                         {pages.map((page, index) => (
@@ -118,6 +118,8 @@ function App({ onCloseClicked }) {
                             <Page page={page} onChange={(newPage) => handleChange(index, newPage)} />
                         </TabPanel>
                     ))}
+                    <TabPanel>
+                    </TabPanel>
                     {pages.length === 0 && (
                         <div className="flex-container flexFlowColumn alignItemsCenter">
                             <h3>Click the + button to add a note.</h3>
