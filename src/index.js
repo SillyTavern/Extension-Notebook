@@ -49,3 +49,19 @@ try {
 } catch (err) {
     console.error('Failed to register notebook command', err);
 }
+
+// intercepts clipboard plaintext to remove duplicate newlines caused by usage of <p> for each line
+document.addEventListener('copy', e => {
+    let selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        let range = selection.getRangeAt(0);
+        if (range.commonAncestorContainer.classList?.contains('ql-editor')) {
+            e.preventDefault();
+            e.clipboardData.setData('text/plain', selection.toString().replace(/\n\n/g, '\n'));
+            // clipboard HTML is passed through unaltered; a temporary element is needed to accomplish this
+            let temp = document.createElement('div');
+            temp.appendChild(range.cloneContents());
+            e.clipboardData.setData('text/html', temp.innerHTML);
+        }
+    }
+});
