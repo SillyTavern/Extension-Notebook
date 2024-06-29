@@ -45,7 +45,23 @@ root.render(
 );
 
 try {
-    registerSlashCommand('notebook', () => buttonElement.click(), ['nb'], '– toggle the notebook display', true, true);
+    registerSlashCommand('notebook', () => buttonElement.click(), ['nb'], 'Toggle the notebook display.');
 } catch (err) {
     console.error('Failed to register notebook command', err);
 }
+
+// intercepts clipboard plaintext to remove duplicate newlines caused by usage of <p> for each line
+document.addEventListener('copy', e => {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        if (range.commonAncestorContainer.classList?.contains('ql-editor')) {
+            e.preventDefault();
+            e.clipboardData.setData('text/plain', selection.toString().replace(/\n\n/g, '\n'));
+            // clipboard HTML is passed through unaltered; a temporary element is needed to accomplish this
+            const temp = document.createElement('div');
+            temp.appendChild(range.cloneContents());
+            e.clipboardData.setData('text/html', temp.innerHTML);
+        }
+    }
+});
