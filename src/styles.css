@@ -1,4 +1,5 @@
 #notebookPanel {
+    display: none;
     overflow-y: auto;
     max-width: 90svw;
     max-height: 90svh;
@@ -16,6 +17,12 @@
     margin: 0;
     right: unset;
     width: calc(((100svw - var(--sheldWidth)) / 2) - 1px);
+    opacity: 0;
+}
+
+#notebookPanel.flex {
+    display: flex;
+    opacity: 1;
 }
 
 #notebookPanel .react-tabs__tab--selected {

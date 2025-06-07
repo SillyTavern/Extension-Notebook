@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles.css';
+import { importFromUrl } from './util.js';
 
 const { registerSlashCommand } = SillyTavern.getContext();
 
@@ -25,16 +26,44 @@ const rootElement = document.getElementById('movingDivs');
 const rootContainer = document.createElement('div');
 rootElement.appendChild(rootContainer);
 rootContainer.id = 'notebookPanel';
-rootContainer.classList.add('drawer-content', 'flexGap5', 'displayNone');
+rootContainer.classList.add('drawer-content', 'flexGap5');
 
-buttonElement.addEventListener('click', () => {
-    rootContainer.classList.toggle('flex');
-    rootContainer.classList.toggle('displayNone');
+async function getAnimationSettings() {
+    const animation_duration = await importFromUrl('/script.js', 'animation_duration', 125);
+    const animation_easing = await importFromUrl('/script.js', 'animation_easing', 'ease-in-out');
+    return { animation_duration, animation_easing };
+}
+
+async function animateNotebookPanel(alreadyVisible) {
+    const { animation_duration, animation_easing } = await getAnimationSettings();
+
+    const keyframes = [
+        { opacity: alreadyVisible ? 1 : 0 },
+        { opacity: alreadyVisible ? 0 : 1 },
+    ];
+    const options = {
+        duration: animation_duration,
+        easing: animation_easing,
+    };
+
+    const animation = rootContainer.animate(keyframes, options);
+
+    if (alreadyVisible) {
+        await animation.finished;
+        rootContainer.classList.toggle('flex');
+    } else {
+        rootContainer.classList.toggle('flex');
+        await animation.finished;
+    }
+}
+
+buttonElement.addEventListener('click', async () => {
+    const alreadyVisible = rootContainer.classList.contains('flex');
+    await animateNotebookPanel(alreadyVisible);
 });
 
-function closePanel() {
-    rootContainer.classList.remove('flex');
-    rootContainer.classList.add('displayNone');
+async function closePanel() {
+    await animateNotebookPanel(true);
 }
 
 const root = ReactDOM.createRoot(rootContainer);

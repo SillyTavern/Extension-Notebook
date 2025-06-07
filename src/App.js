@@ -1,10 +1,11 @@
 /* global SillyTavern */
 /* global jQuery */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import Page from './Page';
+import { importFromUrl } from './util.js';
 
 /**
  * @typedef {object} Page
@@ -12,28 +13,7 @@ import Page from './Page';
  * @property {string} content - The content of the page
  */
 
-/**
- * Import a member from a URL, bypassing webpack.
- * @param {string} url URL to import from
- * @param {string} what Name of the member to import
- * @param {any} defaultValue Fallback value
- * @returns {any} Imported member
- */
-async function importFromUrl(url, what, defaultValue = null) {
-    try {
-        const module = await import(/* webpackIgnore: true */ url);
-        if (!module[what]) {
-            throw new Error(`No ${what} in module`);
-        }
-        return module[what];
-    }
-     catch (error) {
-        console.error(`Failed to import ${what} from ${url}: ${error}`);
-        return defaultValue;
-     }
-}
-
-const dragElement = await importFromUrl('../../../../RossAscends-mods.js', 'dragElement', () => { });
+const dragElement = await importFromUrl('/scripts/RossAscends-mods.js', 'dragElement', () => { });
 
 /**
  * Persistent state manager for the notebook.
