@@ -38,7 +38,7 @@
     "css-loader": "^7.1.1",
     "eslint-config-react-app": "^7.0.1",
     "style-loader": "^4.0.0",
-    "terser-webpack-plugin": "^5.3.10",
+    "terser-webpack-plugin": "^5.3.17",
     "webpack-cli": "^5.1.4"
   }
 }
